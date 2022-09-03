@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.process.mapper.FlowLcglMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.process.entity.FlowLcglEntity">
+            <result column="id" property="id" />
+	        <result column="name" property="name" />
+	        <result column="state" property="state" />
+	        <result column="is_del" property="isDel" />
+	        <result column="flow_data" property="flowData" />
+	        <result column="from_url" property="fromUrl" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.id
+        , t.name
+        , t.state
+        , t.is_del
+        , t.flow_data
+        , t.from_url
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM flow_lcgl t
+        <where>
+            
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM flow_lcgl t
+        <where>
+            
+        </where>
+    </select>
+
+    <update id="updateProcessData">
+        update flow_lcgl set flow_data = #{flowData} WHERE id = #{id}
+    </update>
+
+    <insert id="insertLcjdsx" parameterType="list">
+        insert into flow_lcjdsx (id,lcgl_id,`name`,`type`,`to`,`number`,tjfznr_sql)
+        values
+        <foreach collection ="list" item="process" separator =",">
+            (#{process.id}, #{process.lcglId}, #{process.name},#{process.type},#{process.to},#{process.number},#{process.tjfznrSql})
+        </foreach >
+    </insert>
+
+    <delete id="deleteByLcglId" parameterType="string">
+        delete from flow_lcjdsx where lcgl_id = #{lcglId}
+    </delete>
+
+    <select id="getApproveNode" resultType="com.village.villageupload.process.entity.FlowLcjdsxEntity">
+        select id as id,
+        lcgl_id as lcglId,
+        `name` as name,
+        `type` as type,
+        `to` as `to`,
+        hzdzlx as hzdzlx,
+        hzdznr as hzdznr,
+        `number` as number,
+         tjfznr_sql as tjfznrSql from flow_lcjdsx
+        where lcgl_id = #{lcId}
+    </select>
+
+    <select id="conditionSelect" resultType="int" parameterType="string">
+        ${sql}
+    </select>
+
+    <insert id="savaYfqlc" parameterType="com.village.villageupload.process.entity.FlowYfqlcglEntity">
+        insert into flow_yfqlcgl (id,lcgl_id,data_id,state,CREATE_USER,CREATE_TIME,UPDATE_USER,UPDATE_TIME)
+        value
+        (#{resource.id},#{resource.lcglId},#{resource.dataId},#{resource.state},#{resource.createUser},sysdate(),#{resource.updateUser},sysdate())
+    </insert>
+
+    <insert id="saveLcspr" parameterType="list">
+        insert into flow_lcspr (id,yfqlc_id,approve_id,approve_name,approve_dept,sort,state,start_date,end_date,node_name,idea)
+        values
+        <foreach collection ="list" item="user" separator =",">
+            (#{user.id}, #{user.yfqlcId},#{user.approveId},#{user.approveName},#{user.approveDept},#{user.sort},#{user.state},#{user.startDate},#{user.endDate},#{user.nodeName},#{user.idea})
+        </foreach >
+    </insert>
+
+    <select id="getApproveNodeDetail" resultType="com.village.villageupload.process.entity.FlowLcsprEntity">
+        SELECT
+            lc.id as id,
+            lc.yfqlc_id as yfqlcId,
+            lc.approve_id as approveId,
+            lc.approve_name as approveName,
+            lc.approve_dept as approveDept,
+            lc.sort as sort,
+            lc.state as state,
+            lc.start_date as startDate,
+            lc.end_date as endDate,
+            lc.node_name as nodeName,
+            lc.idea as idea
+        FROM
+            flow_lcspr lc
+            LEFT JOIN flow_yfqlcgl yf ON yf.id = lc.yfqlc_id
+        WHERE
+            yf.data_id = #{dataId}
+        ORDER BY
+            sort
+    </select>
+
+    <select id="getApprovalPending" resultType="map">
+        SELECT
+	lcgl.`name` as lcName,
+	yfq.CREATE_TIME as lcfaTime,
+	us.user_name as userName,
+	lcsp.start_date as lzsj
+FROM
+	flow_lcspr lcsp
+	LEFT JOIN flow_yfqlcgl yfq ON lcsp.yfqlc_id = yfq.id
+	LEFT JOIN flow_lcgl lcgl ON lcgl.id = yfq.lcgl_id
+	left join sys_user us on us.id = yfq.CREATE_USER
+WHERE
+	lcsp.approve_id = #{userId}
+	AND lcsp.state = 1
+    </select>
+
+</mapper>

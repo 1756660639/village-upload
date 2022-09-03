@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.codeGen.mapper.GenGenerateHistoryMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.codeGen.entity.GenGenerateHistoryEntity">
+            <result column="id" property="id" />
+	        <result column="config_content" property="configContent" />
+	        <result column="md5_value" property="md5Value" />
+	        <result column="generate_time" property="generateTime" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.id
+        , t.config_content
+        , t.md5_value
+        , t.generate_time
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_generate_history t
+        <where>
+            
+        </where>
+        order by generate_time desc
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_generate_history t
+        <where>
+            
+        </where>
+    </select>
+
+    <select id="getByMd5" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_generate_history t
+        WHERE md5_value = #{md5}
+        LIMIT 1
+    </select>
+
+</mapper>

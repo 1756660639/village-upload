@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.sysadmin.quartz.mapper.Tst01ScheduletaskMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.sysadmin.quartz.entity.QuartzJob">
+            <result column="TSC001_Id" property="id" />
+	        <result column="TSC001_BeanName" property="beanName" />
+	        <result column="TSC001_CronExpression" property="cronExpression" />
+	        <result column="TSC001_IsPause" property="isPause" />
+	        <result column="TSC001_JobName" property="jobName" />
+	        <result column="TSC001_MethodName" property="methodName" />
+	        <result column="TSC001_Params" property="params" />
+	        <result column="TSC001_Remark" property="remark" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.TSC001_Id
+        , t.TSC001_BeanName
+        , t.TSC001_CronExpression
+        , t.TSC001_IsPause
+        , t.TSC001_JobName
+        , t.TSC001_MethodName
+        , t.TSC001_Params
+        , t.TSC001_Remark
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM tst01_scheduletask t
+        <where>
+            <if test="resource.isPause != null and resource.isPause !=''">
+                AND t.TSC001_IsPause = #{resource.isPause}
+            </if>
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM tst01_scheduletask t
+        <where>
+            
+        </where>
+    </select>
+
+</mapper>

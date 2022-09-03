@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.codeGen.mapper.GenTemplateConfigMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.codeGen.entity.GenTemplateConfigEntity">
+            <result column="id" property="id" />
+	        <result column="name" property="name" />
+	        <result column="folder" property="folder" />
+	        <result column="file_name" property="fileName" />
+	        <result column="content" property="content" />
+	        <result column="is_deleted" property="isDeleted" />
+	        <result column="group_id" property="groupId" />
+	        <result column="group_name" property="groupName" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.id
+        , t.name
+        , t.folder
+        , t.file_name
+        , t.content
+        , t.is_deleted
+        , t.group_id
+        , t.group_name
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_template_config t
+        <where>
+            <if test="resource.groupId != null">
+                 t.group_id = #{resource.groupId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_template_config t
+        <where>
+            
+        </where>
+    </select>
+
+    <select id="listTemplate" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_template_config t
+        WHERE id in
+        <foreach collection="idList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

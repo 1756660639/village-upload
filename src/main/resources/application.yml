@@ -1,0 +1,75 @@
+# 端口
+server:
+  port: 8080
+  servlet:
+    context-path: /villageUpload
+
+# Sa-Token配置
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: villageToken
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+
+# 服务名称
+spring:
+  application:
+    name: village-upload
+  datasource:
+    name: mysql-datasource
+    url: jdbc:mysql://121.89.217.219:3306/upload?characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&useUnicode=true&serverTimezone=UTC
+    username: root
+    password: Ll147258!
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 500MB #上传文件最大限制
+      max-request-size: 500MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    #password: Ll147@258!Red
+
+#mybaits相关配置
+mybatis-plus:
+  mapper-locations: classpath*:/com/village/villageupload/**/mappering/*.xml
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰命名
+    cache-enabled: true #使全局的映射器
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false # 不输出mybatis标识
+
+#验证码相关配置 去除日志打印
+logging:
+  level:
+    com.anji: off
+#验证码相关配置
+aj:
+  captcha:
+    cache-type: redis #分布式部署需要 自己实现CaptchaCacheService 使用redis需要配置redis相关配置
+    type: default #验证码类型 clickword 为点选   blockPuzzle 为滑块验证码   default 两种都实例化
+    font-type: 宋体
+    water-mark: VILLAGE
+
+# 文件保存路径
+village:
+  file:
+    upload-path:
+      windows: E:/villageFile/upload/
+      linux: /home/villageFile/upload/
+      customWindows: E:/villageFile/customUpload/
+      customLinux: /home/villageFile/customUpload/
+  format-xml: false

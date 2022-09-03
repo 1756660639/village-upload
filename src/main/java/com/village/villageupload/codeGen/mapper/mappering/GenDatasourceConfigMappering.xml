@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.codeGen.mapper.GenDatasourceConfigMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.codeGen.entity.GenDatasourceConfigEntity">
+            <result column="id" property="id" />
+	        <result column="db_type" property="dbType" />
+	        <result column="driver_class" property="driverClass" />
+	        <result column="db_name" property="dbName" />
+	        <result column="host" property="host" />
+	        <result column="port" property="port" />
+	        <result column="username" property="username" />
+	        <result column="password" property="password" />
+	        <result column="is_deleted" property="isDeleted" />
+	        <result column="package_name" property="packageName" />
+	        <result column="del_prefix" property="delPrefix" />
+	        <result column="group_id" property="groupId" />
+	        <result column="schema_name" property="schemaName" />
+	        <result column="author" property="author" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.id
+        , t.db_type
+        , t.driver_class
+        , t.db_name
+        , t.host
+        , t.port
+        , t.username
+        , t.password
+        , t.is_deleted
+        , t.package_name
+        , t.del_prefix
+        , t.group_id
+        , t.schema_name
+        , t.author
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_datasource_config t
+        <where>
+            
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM gen_datasource_config t
+        <where>
+            
+        </where>
+    </select>
+
+</mapper>

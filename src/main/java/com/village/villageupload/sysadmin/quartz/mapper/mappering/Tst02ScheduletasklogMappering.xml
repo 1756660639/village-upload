@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.sysadmin.quartz.mapper.Tst02ScheduletasklogMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.sysadmin.quartz.entity.QuartzJobLog">
+            <result column="TSC002_Id" property="id" />
+	        <result column="TSC002_JobName" property="jobName" />
+	        <result column="TSC002_BeanName" property="beanName" />
+	        <result column="TSC002_MethodName" property="methodName" />
+	        <result column="TSC002_Params" property="params" />
+	        <result column="TSC002_CronExpression" property="cronExpression" />
+	        <result column="TSC002_IsSuccess" property="isSuccess" />
+	        <result column="TSC002_ExceptionDetail" property="exceptionDetail" />
+	        <result column="TSC002_TIME" property="time" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.TSC002_Id
+        , t.TSC002_JobName
+        , t.TSC002_BeanName
+        , t.TSC002_MethodName
+        , t.TSC002_Params
+        , t.TSC002_CronExpression
+        , t.TSC002_IsSuccess
+        , t.TSC002_ExceptionDetail
+        , t.TSC002_TIME
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM tst02_scheduletasklog t
+        <where>
+            
+        </where>
+        order by TSC002_CreateTime desc
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM tst02_scheduletasklog t
+        <where>
+            
+        </where>
+    </select>
+
+</mapper>

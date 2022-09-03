@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.village.villageupload.sysadmin.user.mapper.SysUserMapper">
+	<resultMap id="BaseResultMap" type="com.village.villageupload.sysadmin.user.entity.SysUserEntity">
+            <result column="id" property="id" />
+	        <result column="account" property="account" />
+	        <result column="user_name" property="userName" />
+	        <result column="user_pwd" property="userPwd" />
+	        <result column="is_del" property="isDel" />
+		</resultMap>  
+    
+    <!-- 表字段 -->
+    <sql id="baseColumns">
+         t.id
+        , t.account
+        , t.user_name
+        , t.user_pwd
+        , t.is_del
+        </sql> 
+    
+    <!-- 查询全部 -->
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM sys_user t
+        <where>
+            t.is_del = 0
+            <if test="userName !=null || userName !='' ">
+                AND user_name like '%${userName}%'
+            </if>
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listAllPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumns" />
+        FROM sys_user t
+        <where>
+            t.is_del = 0
+        </where>
+    </select>
+
+    <select id="listAllByUserNameAndDept" resultType="map">
+        SELECT
+        t.id
+        , t.account
+        , t.user_name as userName
+        , t.user_pwd
+        , t.is_del
+        , t.user_name as label
+        , t.id as `value`
+        FROM sys_user t
+        <where>
+            t.is_del = 0
+            <if test="resource.userName !=null || resource.userName !='' ">
+                AND (user_name like '%${resource.userName}%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

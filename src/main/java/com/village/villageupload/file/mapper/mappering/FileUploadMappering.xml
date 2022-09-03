@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.village.villageupload.file.mapper.FileUploadMapper">
+
+    <resultMap id="sysUserResult" type="com.village.villageupload.file.entity.FileUploadVoEntity">
+        <id column="id" property="id" />
+        <result column="old_name" property="oldName" />
+        <result column="relative_path" property="relativePath" />
+        <result column="is_file" property="isFile" />
+        <result column="parent_id" property="parentId" />
+        <result column="file_type" property="fileType" />
+    </resultMap>
+
+    <select id="queryFileListPage" resultMap="sysUserResult">
+        SELECT
+                id,
+                old_name,
+                relative_path,
+                is_file,
+                parent_id
+        FROM
+                files
+        <where>
+            and is_del = 0
+            and parent_id = #{resource.parentId,jdbcType=VARCHAR}
+            and user_id = #{resource.userId,jdbcType=VARCHAR}
+        </where>
+    </select>
+
+    <select id="queryFileList" resultMap="sysUserResult">
+        SELECT
+        id,
+        old_name,
+        relative_path,
+        is_file,
+        parent_id,
+        CASE is_file WHEN 0 THEN 'dir' else substring( suffix, 2 ) END AS file_type
+        FROM
+        files
+        <where>
+            and is_del = 0
+            and parent_id = #{resource.parentId,jdbcType=VARCHAR}
+            and user_id = #{resource.userId,jdbcType=VARCHAR}
+        </where>
+    </select>
+
+    <update id="rename" parameterType="com.village.villageupload.file.entity.FileUploadVoEntity">
+        update files set old_name = #{resource.oldName} WHERE id = #{resource.id}
+    </update>
+
+    <update id="delFile">
+        update files set is_del = 1,del_date=CURRENT_TIMESTAMP() WHERE id = #{id}
+    </update>
+
+    <update id="delFileBatch">
+        update files set is_del = 1,del_date=CURRENT_TIMESTAMP() WHERE id in (select id from (SELECT id
+    FROM files, (SELECT groupFileTree(#{id},1) tree) tmp
+    WHERE FIND_IN_SET(id, tree)) as a)
+    </update>
+
+
+</mapper>

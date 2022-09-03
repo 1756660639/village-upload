@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.village.villageupload.login.mapper.LoginMapper">
+
+<insert id="insertRecord" parameterType="map">
+    INSERT INTO record ( id, amount_of_money, source, `type`, create_time, remark )
+        VALUES
+	( uuid(), #{amountOfMoney}, #{source}, #{type}, CURRENT_TIMESTAMP(), #{remark} );
+</insert>
+
+</mapper>
